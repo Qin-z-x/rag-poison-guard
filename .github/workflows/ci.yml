@@ -38,15 +38,20 @@ jobs:
 
       - name: "CLI smoke test: corpus is scanned and poison is found"
         run: |
-          python -m rag_poison_guard scan examples/corpus --json > scan.json && python -c "import json; d=json.load(open('scan.json', encoding='utf-8')); assert d['summary']['poisoned_docs'] >= 3, d['summary']; assert d['summary']['by_severity']['high'] >= 4; print('summary:', d['summary'])"
+          python -m rag_poison_guard scan examples/corpus --json > scan.json && python -c "import json; d=json.load(open('scan.json', encoding='utf-8')); assert d['summary']['poisoned_docs'] >= 3, d['summary']; assert d['summary']['counts']['high'] >= 4; print('summary:', d['summary'])"
 
       - name: "Clean document passes the strictest gate"
         run: |
           python -m rag_poison_guard scan examples/corpus/clean_doc.md --fail-on low
 
-      - name: "Custom canary detection works"
+      - name: "Custom canary detection works (expected exit 1)"
         run: |
+          set +e
           python -m rag_poison_guard scan examples/corpus/poisoned_canary.md --canary SECRET-12345 --fail-on high
+          code=$?
+          set -e
+          echo "canary gate exit code: $code"
+          test "$code" -eq 1
 
       - name: "CI gate catches poisoned corpus (expected exit code 1)"
         run: |
