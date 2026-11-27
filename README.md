@@ -144,6 +144,13 @@ canary 标记、混合文字同形字以及文档主导语言异常偏移。每�
 都会被扫描——因为模型读取的是原始文本。本项目是启发式内容扫描器，不能证明语料干净；
 引用攻击话术的安全政策文档会被标记，这是已记录在文档中的误报。示例语料全部为合成数据，
 不声称发现新漏洞或新 CVE。
+
+## 视频演示
+
+B站：https://www.bilibili.com/video/BV1BE1pztE4o（67 秒）
+
+视频使用本仓库自带的合成/无害样例与真实命令输出；本项目是启发式检测工具，边界见上文说明。
+
 ## License
 
 MIT -- see [LICENSE](LICENSE). Prior art acknowledged: indirect prompt injection
