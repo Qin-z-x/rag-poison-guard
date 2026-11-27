@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Core must be standard-library only
+        run: python scripts/check_core_deps.py
+
+      - name: Unit tests (unittest, no third-party dependencies)
+        run: python -m unittest discover -s tests -t .
+
+      - name: CLI smoke test: corpus is scanned and poison is found
+        run: python -m rag_poison_guard scan examples/corpus --json > scan.json && python -c "import json; d=json.load(open('scan.json', encoding='utf-8')); assert d['summary']['poisoned_docs'] >= 3, d['summary']; assert d['summary']['by_severity']['high'] >= 4; print('summary:', d['summary'])"
+
+      - name: Clean document passes the strictest gate
+        run: python -m rag_poison_guard scan examples/corpus/clean_doc.md --fail-on low
+
+      - name: Custom canary detection works
+        run: python -m rag_poison_guard scan examples/corpus/poisoned_canary.md --canary SECRET-12345 --fail-on high
+
+      - name: CI gate catches poisoned corpus (expected exit code 1)
+        run: |
+          set +e
+          python -m rag_poison_guard scan examples/corpus --fail-on high
+          code=$?
+          set -e
+          echo "scan exit code: $code"
+          test "$code" -eq 1

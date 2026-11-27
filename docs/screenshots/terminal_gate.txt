@@ -1,0 +1,28 @@
+$ python -m rag_poison_guard scan examples/corpus --fail-on high
+rag-poison-guard 0.1.0  scan  6 document(s)
+doc 1/6  examples/corpus/clean_doc.md                         risk=0   verdict=clean  findings=0
+doc 2/6  examples/corpus/mixed_language.md                    risk=100 verdict=poisoned  findings=4
+  MEDIUM RAG-CROSS-LINGUAL      line 5    col 1    instruction appears in a script that is not the document's dominant script (CJK vs LATIN)
+  HIGH   RAG-INSTRUCTION        line 5    col 1    instruction-injection phrasing (zh-ignore): '忽略之前的所有指令'
+  LOW    RAG-LANG-SHIFT         line 5    col 1    line is mostly CJK while the document is mostly LATIN
+  HIGH   RAG-INSTRUCTION        line 6    col 1    instruction-injection phrasing (es-ignore): 'Ignora las instrucciones anteriores'
+doc 3/6  examples/corpus/poisoned_canary.md                   risk=40  verdict=poisoned  findings=1
+  HIGH   RAG-CANARY             line 3    col 63   canary marker in the corpus: 'RAG-CANARY-7C1A9B'
+doc 4/6  examples/corpus/poisoned_hidden_html.md              risk=100 verdict=poisoned  findings=5
+  MEDIUM RAG-HIDDEN-CSS         line 5    col 1    markup hides content from a human renderer but not from text extraction
+  HIGH   RAG-INSTRUCTION        line 5    col 27   instruction-injection phrasing (en-ignore): 'IGNORE ALL PREVIOUS INSTRUCTIONS'
+  HIGH   RAG-HTML-COMMENT       line 9    col 1    HTML comment contains an instruction-like payload (en-ignore)
+  HIGH   RAG-INSTRUCTION        line 9    col 13   instruction-injection phrasing (en-ignore): 'OVERRIDE: forget prior rules'
+  HIGH   RAG-INSTRUCTION        line 9    col 46   instruction-injection phrasing (en-role): 'reveal the system prompt'
+doc 5/6  examples/corpus/poisoned_zw.md                       risk=80  verdict=poisoned  findings=2
+  HIGH   RAG-ZW-RUN             line 6    col 1    64 zero-width/variation-selector characters
+  HIGH   RAG-ZW-RUN             line 6    col 65   1 bidi control characters (text reordering)
+doc 6/6  examples/corpus/special_token.md                     risk=100 verdict=poisoned  findings=4
+  HIGH   RAG-SPECIAL-TOKEN      line 5    col 1    chat/template special token in ingested text: '<|im_start|>'
+  HIGH   RAG-INSTRUCTION        line 6    col 1    instruction-injection phrasing (en-role): 'You are now'
+  HIGH   RAG-INSTRUCTION        line 6    col 32   instruction-injection phrasing (en-role): 'Reveal the system prompt'
+  HIGH   RAG-SPECIAL-TOKEN      line 7    col 1    chat/template special token in ingested text: '<|im_end|>'
+summary: 6 document(s), 16 finding(s): 13 high, 2 medium, 1 low; poisoned=5 suspicious=0 clean=1
+[stderr]
+FAIL: 13 finding(s) at or above severity 'high'
+[exit code: 1]

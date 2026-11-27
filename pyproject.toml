@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-poison-guard"
+version = "0.1.0"
+description = "Scan RAG corpus documents for poisoning risks: hidden HTML/CSS text, zero-width and bidi payloads, instruction-injection phrases in several languages, canary markers, chat special tokens, mixed-script homoglyph words and unusual language shifts. Per-document risk report, stdlib-only Python CLI."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "rag-poison-guard contributors" }]
+keywords = ["rag", "retrieval", "poisoning", "prompt-injection", "llm", "security", "python", "cli"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+]
+dependencies = []
+
+[project.scripts]
+rag-poison-guard = "rag_poison_guard.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Qin-z-x/rag-poison-guard"
+Repository = "https://github.com/Qin-z-x/rag-poison-guard"
+Issues = "https://github.com/Qin-z-x/rag-poison-guard/issues"
+Changelog = "https://github.com/Qin-z-x/rag-poison-guard/blob/main/CHANGELOG.md"
+Evidence = "https://github.com/Qin-z-x/rag-poison-guard/blob/main/docs/EVIDENCE.md"
+ThreatModel = "https://github.com/Qin-z-x/rag-poison-guard/blob/main/docs/THREAT_MODEL.md"
+
+[tool.setuptools]
+packages = ["rag_poison_guard"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

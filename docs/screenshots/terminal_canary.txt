@@ -1,0 +1,7 @@
+$ python -m rag_poison_guard scan examples/corpus/poisoned_canary.md --canary SECRET-12345
+rag-poison-guard 0.1.0  scan  1 document(s)
+doc 1/1  examples/corpus/poisoned_canary.md                   risk=80  verdict=poisoned  findings=2
+  HIGH   RAG-CANARY             line 3    col 63   canary marker in the corpus: 'RAG-CANARY-7C1A9B'
+  HIGH   RAG-CANARY             line 4    col 36   configured canary marker found: 'SECRET-12345'
+summary: 1 document(s), 2 finding(s): 2 high, 0 medium, 0 low; poisoned=1 suspicious=0 clean=0
+[exit code: 0]

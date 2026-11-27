@@ -1,0 +1,6 @@
+$ python -m rag_poison_guard scan examples/corpus/clean_doc.md --fail-on low
+rag-poison-guard 0.1.0  scan  1 document(s)
+doc 1/1  examples/corpus/clean_doc.md                         risk=0   verdict=clean  findings=0
+summary: 1 document(s), 0 finding(s): 0 high, 0 medium, 0 low; poisoned=0 suspicious=0 clean=1
+PASS: no finding at or above severity 'low'
+[exit code: 0]
