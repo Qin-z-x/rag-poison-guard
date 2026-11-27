@@ -156,3 +156,10 @@ B站：https://www.bilibili.com/video/BV1BE1pztE4o（67 秒）
 MIT -- see [LICENSE](LICENSE). Prior art acknowledged: indirect prompt injection
 (Greshake et al.), invisible-Unicode/ASCII-smuggling reporting, Unicode
 confusables, and canary-based data-contamination detection.
+
+## 系列：LLM 安全防护工具
+
+本项目是「LLM 安全 7 件套」之一：[llm-markdown-xss-guard](https://github.com/Qin-Z-x/llm-markdown-xss-guard)（模型输出 XSS 净化）、[tool-call-arg-guard](https://github.com/Qin-Z-x/tool-call-arg-guard)（工具调用参数注入校验）、[model-pii-redactor](https://github.com/Qin-Z-x/model-pii-redactor)（模型输出 PII/密钥脱敏）、[llm-sql-injection-guard](https://github.com/Qin-Z-x/llm-sql-injection-guard)（模型生成 SQL 注入 lint）、[ai-agent-permission-guard](https://github.com/Qin-Z-x/ai-agent-permission-guard)（Agent 工具权限审计）、[llm-file-path-guard](https://github.com/Qin-Z-x/llm-file-path-guard)（生成代码路径穿越扫描）
+
+- GitHub 主页（全部 14 个项目）：https://github.com/Qin-Z-x
+- B站演示合集（7 工具 4 分钟）：https://www.bilibili.com/video/BV1jH1pz4ED7
